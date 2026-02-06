@@ -1,0 +1,1 @@
+print("BehaviorGuard project initialized")
