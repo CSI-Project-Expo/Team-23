@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+  <head>
+    <title>BehaviorGuard | Secure Login</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", sans-serif;
+        background: linear-gradient(135deg, #1e3c72, #2a5298);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .container {
+        background: white;
+        padding: 40px;
+        width: 350px;
+        border-radius: 15px;
+        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+
+      h2 {
+        margin-bottom: 25px;
+        color: #2a5298;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px;
+        margin: 10px 0;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+      }
+
+      input:focus {
+        border-color: #2a5298;
+        outline: none;
+        box-shadow: 0 0 5px rgba(42, 82, 152, 0.5);
+      }
+
+      .btn {
+        background: #2a5298;
+        color: white;
+        border: none;
+        padding: 12px;
+        width: 100%;
+        border-radius: 8px;
+        font-size: 15px;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .btn:hover {
+        background: #1e3c72;
+      }
+
+      .footer {
+        margin-top: 15px;
+        font-size: 12px;
+        color: gray;
+      }
+
+      .logo {
+        font-size: 20px;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #1e3c72;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <div class="logo">🔐 BehaviorGuard</div>
+      <h2>Secure Login</h2>
+
+      <form method="POST">
+        <input
+          type="text"
+          name="username"
+          placeholder="Enter Username"
+          required
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="Enter Password"
+          required
+        />
+        <button class="btn" type="submit">Login</button>
+      </form>
+
+      <div class="footer">Behavioral Biometric Authentication System</div>
+    </div>
+  </body>
+</html>
