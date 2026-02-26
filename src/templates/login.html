@@ -1,103 +1,181 @@
 <!doctype html>
 <html>
-  <head>
-    <title>BehaviorGuard | Secure Login</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+  <title>BehaviorGuard | Secure Login</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-      body {
-        margin: 0;
-        padding: 0;
-        font-family: "Segoe UI", sans-serif;
-        background: linear-gradient(135deg, #1e3c72, #2a5298);
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
+  <style>
+    :root{
+      --bg1:#0f2027;
+      --bg2:#203a43;
+      --bg3:#2c5364;
+      --card:rgba(255,255,255,0.08);
+      --text:white;
+    }
 
-      .container {
-        background: white;
-        padding: 40px;
-        width: 350px;
-        border-radius: 15px;
-        box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
-        text-align: center;
-      }
+    .light{
+      --bg1:#dfe9f3;
+      --bg2:#ffffff;
+      --bg3:#f5f7fa;
+      --card:rgba(0,0,0,0.05);
+      --text:#111;
+    }
 
-      h2 {
-        margin-bottom: 25px;
-        color: #2a5298;
-      }
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Poppins,sans-serif;
+    }
 
-      input {
-        width: 100%;
-        padding: 12px;
-        margin: 10px 0;
-        border-radius: 8px;
-        border: 1px solid #ccc;
-        font-size: 14px;
-      }
+    body{
+      height:100vh;
+      display:flex;
+      justify-content:center;
+      align-items:center;
+      background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+      color:var(--text);
+      transition:0.4s;
+    }
 
-      input:focus {
-        border-color: #2a5298;
-        outline: none;
-        box-shadow: 0 0 5px rgba(42, 82, 152, 0.5);
-      }
+    .card{
+      width:370px;
+      padding:40px;
+      border-radius:20px;
+      backdrop-filter:blur(18px);
+      background:var(--card);
+      box-shadow:0 25px 50px rgba(0,0,0,0.45);
+      text-align:center;
+    }
 
-      .btn {
-        background: #2a5298;
-        color: white;
-        border: none;
-        padding: 12px;
-        width: 100%;
-        border-radius: 8px;
-        font-size: 15px;
-        cursor: pointer;
-        transition: 0.3s;
-      }
+    .toggle{
+      position:absolute;
+      top:20px;
+      right:20px;
+      cursor:pointer;
+      font-size:18px;
+    }
 
-      .btn:hover {
-        background: #1e3c72;
-      }
+    .logo{
+      font-size:24px;
+      margin-bottom:10px;
+      font-weight:600;
+    }
 
-      .footer {
-        margin-top: 15px;
-        font-size: 12px;
-        color: gray;
-      }
+    .fingerprint{
+      font-size:45px;
+      margin:15px 0;
+      animation:scan 2s infinite;
+    }
 
-      .logo {
-        font-size: 20px;
-        font-weight: bold;
-        margin-bottom: 10px;
-        color: #1e3c72;
-      }
-    </style>
-  </head>
+    @keyframes scan{
+      0%{opacity:0.4; transform:scale(0.95);}
+      50%{opacity:1; transform:scale(1.05);}
+      100%{opacity:0.4; transform:scale(0.95);}
+    }
 
-  <body>
-    <div class="container">
-      <div class="logo">🔐 BehaviorGuard</div>
-      <h2>Secure Login</h2>
+    .inputBox{
+      margin:15px 0;
+      text-align:left;
+    }
 
-      <form method="POST">
-        <input
-          type="text"
-          name="username"
-          placeholder="Enter Username"
-          required
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Enter Password"
-          required
-        />
-        <button class="btn" type="submit">Login</button>
-      </form>
+    input{
+      width:100%;
+      padding:12px;
+      border:none;
+      border-radius:10px;
+      outline:none;
+      background:rgba(255,255,255,0.2);
+      color:var(--text);
+    }
 
-      <div class="footer">Behavioral Biometric Authentication System</div>
+    .strength{
+      height:5px;
+      border-radius:5px;
+      margin-top:6px;
+      background:red;
+      transition:0.3s;
+    }
+
+    .btn{
+      width:100%;
+      padding:12px;
+      margin-top:15px;
+      border:none;
+      border-radius:12px;
+      background:#00f2fe;
+      color:black;
+      font-weight:600;
+      cursor:pointer;
+      transition:0.3s;
+      box-shadow:0 0 12px #00f2fe;
+    }
+
+    .btn:hover{
+      transform:translateY(-2px);
+      box-shadow:0 0 20px #00f2fe;
+    }
+
+    .footer{
+      margin-top:15px;
+      font-size:12px;
+      opacity:0.7;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="toggle" onclick="toggleMode()">🌙</div>
+
+<div class="card">
+  <div class="logo">🔐 BehaviorGuard</div>
+  <div class="fingerprint">🧬</div>
+
+  <form onsubmit="login(event)">
+    <div class="inputBox">
+      <input id="user" type="text" placeholder="Username" required>
     </div>
-  </body>
+
+    <div class="inputBox">
+      <input id="pass" type="password" placeholder="Password" required onkeyup="strength()">
+      <div id="bar" class="strength"></div>
+    </div>
+
+    <button class="btn">Authenticate</button>
+  </form>
+
+  <div class="footer">Behavioral biometric security active</div>
+</div>
+
+<script>
+function toggleMode(){
+  document.body.classList.toggle("light");
+}
+
+function strength(){
+  let p=document.getElementById("pass").value;
+  let bar=document.getElementById("bar");
+
+  if(p.length<4){ bar.style.background="red"; }
+  else if(p.length<7){ bar.style.background="orange"; }
+  else{ bar.style.background="lime"; }
+}
+
+function login(e){
+  e.preventDefault();
+
+  const u=document.getElementById("user").value;
+  const p=document.getElementById("pass").value;
+
+  if(u==="admin" && p==="1234"){
+    document.body.innerHTML =
+      "<h1 style='font-family:Poppins;text-align:center'>✅ Access Granted<br><br>Welcome to Dashboard</h1>";
+  }else{
+    alert("Invalid Credentials ❌");
+  }
+}
+</script>
+
+</body>
 </html>
