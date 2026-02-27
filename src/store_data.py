@@ -1,15 +1,19 @@
-import csv
+import json
 import os
 
-FILE_PATH = "behavior.csv"
+DATA_FILE = "data/patterns.json"
 
 def store_pattern(username, pattern):
-    file_exists = os.path.isfile(FILE_PATH)
+    if not os.path.exists("data"):
+        os.makedirs("data")
 
-    with open(FILE_PATH, "a", newline="") as file:
-        writer = csv.writer(file)
+    if os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "r") as f:
+            data = json.load(f)
+    else:
+        data = {}
 
-        if not file_exists:
-            writer.writerow(["username", "pattern"])
+    data[username] = pattern
 
-        writer.writerow([username, pattern])
+    with open(DATA_FILE, "w") as f:
+        json.dump(data, f)
