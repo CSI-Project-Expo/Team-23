@@ -1,41 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>BehaviorGuard Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-from flask import Flask, render_template, request, redirect, url_for
-from store_data import store_pattern
-from compare_behavior import compare_pattern
+    <style>
+        :root{
+            --bg1:#0f2027;
+            --bg2:#203a43;
+            --bg3:#2c5364;
+            --card:rgba(255,255,255,0.08);
+            --text:white;
+            --accent:#00f2fe;
+        }
 
-app = Flask(__name__)
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Poppins,sans-serif;
+        }
 
-@app.route("/", methods=["GET", "POST"])
-def login():
+        body{
+            min-height:100vh;
+            background:linear-gradient(135deg,var(--bg1),var(--bg2),var(--bg3));
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            color:var(--text);
+        }
 
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
+        .card{
+            width:600px;
+            padding:40px;
+            border-radius:20px;
+            backdrop-filter:blur(18px);
+            background:var(--card);
+            box-shadow:0 25px 50px rgba(0,0,0,0.45);
+            text-align:center;
+        }
 
-        # Dummy typing pattern for demo (later replace with keystroke module)
-        new_pattern = [0.21, 0.19, 0.32, 0.28]
+        h2{
+            margin-bottom:20px;
+        }
 
-        if username == "admin" and password == "1234":
+        p{
+            margin:10px 0;
+            font-size:15px;
+        }
 
-            suspicious = compare_pattern(username, new_pattern)
+        .status{
+            font-size:20px;
+            font-weight:bold;
+            margin:15px 0;
+        }
 
-            if suspicious:
-                return "⚠ Suspicious behaviour detected"
+        .score{
+            font-size:18px;
+            margin:10px 0;
+        }
 
-            store_pattern(username, new_pattern)
-            return redirect(url_for("dashboard"))
+        .progress{
+            width:100%;
+            height:20px;
+            background:rgba(255,255,255,0.2);
+            border-radius:20px;
+            overflow:hidden;
+            margin:10px 0 20px 0;
+        }
 
-        return render_template("login.html", error="Invalid Credentials ❌")
+        .progress-bar{
+            height:100%;
+            background:var(--accent);
+            transition:0.5s ease;
+        }
 
-    return render_template("login.html")
+        hr{
+            margin:20px 0;
+            border:0.5px solid rgba(255,255,255,0.2);
+        }
 
+        a{
+            display:inline-block;
+            margin-top:15px;
+            padding:10px 20px;
+            border-radius:10px;
+            text-decoration:none;
+            background:var(--accent);
+            color:black;
+            font-weight:600;
+            transition:0.3s;
+            box-shadow:0 0 12px var(--accent);
+        }
 
-@app.route("/dashboard")
-def dashboard():
-    return render_template("dashboard.html")
+        a:hover{
+            transform:translateY(-2px);
+            box-shadow:0 0 20px var(--accent);
+        }
+    </style>
+</head>
+<body>
 
+<div class="card">
+    <h2>🔐 BehaviorGuard Security Dashboard</h2>
 
-if __name__ == "__main__":
-    app.run(debug=True)
+    <p><strong>User:</strong> {{ username if username else "Unknown User" }}</p>
+    <p><strong>Login Time:</strong> {{ login_time }}</p>
 
+    <p class="status" style="color: {{ status_color }};">
+        {{ status }}
+    </p>
 
+    <p class="score">Behavior Match Score: {{ match_score }}%</p>
+
+    <div class="progress">
+        <div class="progress-bar" style="width: {{ match_score }}%;"></div>
+    </div>
+
+    <p><strong>Risk Level:</strong> {{ risk_level }}</p>
+    <p><strong>Average Typing Speed:</strong> {{ avg_speed }} sec</p>
+
+    <hr>
+
+    <p><strong>Captured Typing Pattern:</strong></p>
+    <p style="font-size:13px; opacity:0.8;">{{ pattern }}</p>
+
+    <a href="/logout">Logout</a>
+</div>
+
+</body>
+</html>
