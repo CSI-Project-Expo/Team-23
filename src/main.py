@@ -1,1 +1,0 @@
-print("BehaviorGuard project initialized")
