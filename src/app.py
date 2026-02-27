@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for
-from store_data import store_pattern
-from compare import compare_pattern
+from src.store_data import store_pattern
+from src.compare import compare_pattern
 import datetime
 
 app = Flask(__name__)
@@ -79,3 +79,4 @@ def logout():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=10000)
+
